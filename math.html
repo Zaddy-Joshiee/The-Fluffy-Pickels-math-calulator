@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fluffy Pickles Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .calculator {
+            width: 300px;
+            margin: 100px auto;
+            background-color: #fff;
+            border-radius: 5px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        #display {
+            width: 100%;
+            margin-bottom: 15px;
+            padding: 10px;
+            font-size: 24px;
+            border: none;
+            outline: none;
+            text-align: right;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .keys {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-gap: 10px;
+        }
+        button {
+            padding: 15px;
+            font-size: 18px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .history {
+            margin-top: 20px;
+        }
+        .theme-toggle {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator">
+        <input type="text" id="display" readonly>
+        <div class="keys">
+            <button onclick="clearDisplay()">C</button>
+            <button onclick="appendToDisplay('7')">7</button>
+            <button onclick="appendToDisplay('8')">8</button>
+            <button onclick="appendToDisplay('9')">9</button>
+            <button onclick="appendToDisplay('/')">/</button>
+            <button onclick="appendToDisplay('4')">4</button>
+            <button onclick="appendToDisplay('5')">5</button>
+            <button onclick="appendToDisplay('6')">6</button>
+            <button onclick="appendToDisplay('*')">*</button>
+            <button onclick="appendToDisplay('1')">1</button>
+            <button onclick="appendToDisplay('2')">2</button>
+            <button onclick="appendToDisplay('3')">3</button>
+            <button onclick="appendToDisplay('-')">-</button>
+            <button onclick="appendToDisplay('0')">0</button>
+            <button onclick="appendToDisplay('.')">.</button>
+            <button onclick="calculate()">=</button>
+            <button onclick="appendToDisplay('+')">+</button>
+        </div>
+        <div class="history">
+            <h3>History</h3>
+            <ul id="history-list"></ul>
+        </div>
+        <div class="theme-toggle">
+            <button onclick="toggleTheme()">Toggle Theme</button>
+        </div>
+    </div>
+    <script>
+        let display = document.getElementById('display');
+        let historyList = document.getElementById('history-list');
+        let theme = 'light';
+
+        function appendToDisplay(value) {
+            display.value += value;
+        }
+
+        function clearDisplay() {
+            display.value = '';
+        }
+
+        function calculate() {
+            let expression = display.value;
+            try {
+                let result = eval(expression);
+                if (isNaN(result) || !isFinite(result)) {
+                    display.value = 'Error';
+                } else {
+                    display.value = result;
+                    addToHistory(expression + ' = ' + result);
+                }
+            } catch (error) {
+                display.value = 'Error';
+            }
+        }
+
+        function addToHistory(entry) {
+            let li = document.createElement('li');
+            li.textContent = entry;
+            historyList.appendChild(li);
+        }
+
+        function toggleTheme() {
+            if (theme === 'light') {
+                theme = 'dark';
+                document.body.style.backgroundColor = '#333';
+                document.body.style.color = '#fff';
+                document.querySelectorAll('.calculator, .calculator button').forEach(element => {
+                    element.style.backgroundColor = '#555';
+                    element.style.boxShadow = '0 0 10px rgba(255, 255, 255, 0.1)';
+                });
+            } else {
+                theme = 'light';
+                document.body.style.backgroundColor = '#f4f4f4';
+                document.body.style.color = '#333';
+                document.querySelectorAll('.calculator, .calculator button').forEach(element => {
+                    element.style.backgroundColor = '#007bff';
+                    element.style.boxShadow = '0 0 10px rgba(0, 0, 0, 0.1)';
+                });
+            }
+        }
+    </script>
+</body>
+</html>
